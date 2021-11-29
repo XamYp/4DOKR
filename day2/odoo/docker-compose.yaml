@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  web:
+    image: odoo:14.0
+    depends_on:
+    - db
+    ports:
+    - "8069:8069"
+    environment:
+    - HOST=db
+    - USER=odoo
+    - PASSWORD=supinfo
+
+  db:
+    image: postgres:13
+    environment:
+    - POSTGRES_DB=postgres
+    - POSTGRES_PASSWORD=supinfo
+    - POSTGRES_USER=odoo

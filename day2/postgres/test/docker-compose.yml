@@ -1,0 +1,21 @@
+version: '3'
+services:
+  postgresql:
+    image: postgres:13
+    container_name: db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - './tables.sql:/docker-entrypoint-initdb.d/tables.sql'
+      - 'pgdata:/var/lib/postgresql/data'
+    networks:
+      - myNetwork
+volumes:
+  pgdata:
+    driver: local
+networks:
+  myNetwork:
+    driver: bridge
