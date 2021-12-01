@@ -2,27 +2,21 @@ version: "3"
 services:
   db:
     image: postgres:9.4
-    container_name: db
     networks:
       - back-tier
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-    expose:
-      - "6379"
     volumes:
       - db-data:/var/lib/postgresql/data
 
   redis:
     image: redis:5.0-alpine3.10
-    container_name: redis
     deploy:
       mode: replicated
       replicas: 3
     networks:
       - back-tier
-    expose:
-      - "6379"
     depends_on:
       - db
 
@@ -31,7 +25,6 @@ services:
       context: ./worker
       dockerfile: Dockerfile
     image: worker:1.0
-    container_name: worker
     deploy:
       mode: replicated
       replicas: 3
@@ -45,7 +38,6 @@ services:
       context: ./result
       dockerfile: Dockerfile
     image: result:1.0
-    container_name: result
     deploy:
       mode: replicated
       replicas: 3
@@ -66,7 +58,6 @@ services:
       context: ./vote
       dockerfile: Dockerfile
     image: vote:1.0
-    container_name: vote
     deploy:
       mode: replicated
       replicas: 3
@@ -86,6 +77,6 @@ volumes:
 
 networks:
   back-tier:
-    driver: bridge
+    driver: overlay
   front-tier:
-    driver: bridge
+    driver: overlay
